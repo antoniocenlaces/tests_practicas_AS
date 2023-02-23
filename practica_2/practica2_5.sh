@@ -1,11 +1,26 @@
 #!/bin/bash
-hour=$(date | cut -c12-13)
-if [ "$hour" -ge 0 -a "$hour" -le 11 ]
+echo -n "Introduzca el nombre de un directorio: "
+read directorio
+# echo "Lo que he leido: $directorio"
+if [ -d "$directorio" ]
 then
- echo "Buenos días"
-elif [ "$hour" -ge 12 -a "$hour" -le 17 ]
-then
-    echo "Buenas tardes"
+    ficheros=0
+    directorios=0
+   # contador=0
+    cd "$directorio"
+    for item in *
+    do
+    # contador=$((contador+1))
+    # echo "Para el item numero $contador el ls ha dado $directorio/$item"
+    if [ -f "./$item" ]
+	then
+		ficheros=$((ficheros+1))
+	elif [ -d "./$item" ]
+    then
+	    directorios=$((directorios+1))
+    fi
+    done
+    echo "El numero de ficheros y directorios en $directorio es de $ficheros y $directorios, respectivamente"
 else
-    echo "Buenas noches"
+    echo "$directorio no es un directorio"
 fi
