@@ -1,0 +1,26 @@
+Comentarios de diseño practica_3.sh:
+------------------------------------
+
+El diseño del script es bastante sencillo. Mediante estructuras if se comprueba
+rapidamente si se tienen privilegios de administración  y si el numero de
+parámetros es correcto.
+
+Una vez se han realizado estas comprobaciones se utiliza un case para
+implementar cada una de las opciones del script y el caso de opción errónea.
+
+En la implementación de -a:
+	Mediante un bucle while se procesa cada linea del fichero.
+	En cada iteración se extraen los datos y se comprueba que no sean vacíos.
+	Una vez sabemos que los datos son válidos comprobamos si el usuario ya
+	existe, y si no es así procedemos a crearlo según las especificaciones del
+	enunciado.
+	
+En la implementación de -s:
+	Primero se comprueba rápidamente la existencia de la estructura de
+	directorios /extra/backup y si no existe se crea.
+	Después se procesa cada linea del fichero mediante un bucle while.
+	En cada iteración se extrae el nombre del usuario y se obtiene su directorio
+	home.
+	Finalmente se intenta hacer un archivo .tar del home del usuario, y si esto
+	tiene éxito se procede a copiar el .tar en /extra/backup y borrar el
+	usuario.
