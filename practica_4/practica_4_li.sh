@@ -6,7 +6,7 @@ then
 	echo "Este script necesita privilegios de administracion"
 	exit 1
 else
-	if [ $# -ne 2 ]
+	if [ $# -ne 3 ]
 	then
 		echo "Numero incorrecto de parametros"
 	else
