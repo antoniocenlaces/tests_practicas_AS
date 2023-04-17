@@ -17,7 +17,7 @@ else
             -a)
                 while read user pass nombre
                 do
-                    if [ -z "$user" || -z "$pass" || -z "$nombre" ] # Comprueba si algún campo leido del fichero está vacío
+                    if [ -z "$user" ] || [ -z "$pass" ] || [ -z "$nombre" ] # Comprueba si algún campo leido del fichero está vacío
                     then # Si algún campo no tiene valor muestra mensaje
                         echo "Campo invalido"
                         exit 1
