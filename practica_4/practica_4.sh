@@ -17,7 +17,7 @@ else
             -a)
                 while read user pass nombre
                 do
-                    if [ -z "$user" || -z "$pass" || -z "$nombre" ] # Comprueba si algún campo leido del fichero está vacío
+                    if [ -z "$user" ] || [ -z "$pass" ] || [ -z "$nombre" ] # Comprueba si algún campo leido del fichero está vacío
                     then # Si algún campo no tiene valor muestra mensaje
                         echo "Campo invalido"
                         exit 1
@@ -49,7 +49,8 @@ else
                         directorio=$(grep "$user" /etc/passwd | cut -d ':' -f 6)
                         if [ -d "$directorio" ] # Comprueba que este usuario tiene directorio local
                         then
-                            tar -cf "/extra/backup/$user".tar "$directorio/" # Hace copia de seguridad de directorio local
+                             # Hace copia de seguridad de directorio local
+                            tar -cf "/extra/backup/$user".tar "$directorio/" >/dev/null 2>/dev/null
                         fi
                         # Borra el usuario y su directorio home
                         userdel -r "$user" >/dev/null 2>/dev/null
