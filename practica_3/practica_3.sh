@@ -1,9 +1,11 @@
 #!/bin/bash
 #779035, Bernad Ferrando, Lizer, T, 2, A
 #143045, Gonzalez Almela, Antonio, T, 2, A
+echo "Soy DebianAG_AS1"
+echo "Los parámetros recibidos: \$0: $0, \$1: $1, \$2: $2"
 if [ $EUID -ne 0 ]
 then
-    echo "Este script necesita privilegios de administracion"
+    echo "DebianAG_AS1: Este script necesita privilegios de administracion"
     exit 1
 else
     if [ $# -ne 2 ]
@@ -49,7 +51,9 @@ else
                         directorio=$(grep "$user" /etc/passwd | cut -d ':' -f 6)
                         if [ -d "$directorio" ] # Comprueba que este usuario tiene directorio local
                         then
-                            tar -cf "/extra/backup/$user".tar "$directorio/" # Hace copia de seguridad de directorio local
+                            # Hace copia de seguridad de directorio local
+                            tar -cf "/extra/backup/$user".tar "$directorio/" \
+                            >/dev/null 2>/dev/null 
                         fi
                         # Borra el usuario y su directorio home
                         userdel -r "$user" >/dev/null 2>/dev/null

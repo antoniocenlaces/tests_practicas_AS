@@ -63,7 +63,8 @@ else
                             then # El $user existe y podemos borrarlo
                                
                                     # Hace copia de seguridad de directorio local
-                                    ssh -n as@$ip tar -cf /extra/backup/"$user".tar '$(grep "$user" /etc/passwd | cut -d ':' -f 6)/' >/dev/null 2>/dev/null
+                                    ssh -n as@$ip tar -cf /extra/backup/"$user".tar \ 
+                                    '$(grep "$user" /etc/passwd | cut -d ':' -f 6)/' >/dev/null 2>/dev/null
                                 
                                 # Borra el usuario y su directorio home
                                 ssh -n as@$ip userdel -r "$user" >/dev/null 2>/dev/null
