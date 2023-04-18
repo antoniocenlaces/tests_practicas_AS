@@ -28,15 +28,15 @@ else
                                 exit 1
                             else
                                 # Comprueba si existe este $user en la máquina remota
-                                ssh -n as@$ip id -u "$user" >/dev/null 2>/dev/null 
+                                ssh -n as@$ip "id -u $user &>/dev/null" 
                                 if [ $? -eq 0 ]
                                 then # El $user existe. Muestra mensaje
                                     echo "El usuario $user ya existe"
                                 else
                                     ssh -n as@$ip useradd "$user" -U -m -k /etc/skel -K UID_MIN=1815 -c "$nombre"
-                                    ssh -n as@$ip usermod --expiredate "$(date -d "+30 days" +%Y-%m-%d)" "$user"
-                                    ssh -n as@$ip echo "$user:$pass" | chpasswd
-                                    ssh -n as@$ip echo "$nombre ha sido creado"
+                                    
+                                    ssh -n as@$ip "echo $user:$pass | sudo chpasswd"
+                                    ssh -n as@$ip "echo $nombre ha sido creado"
                                 fi
                             fi
                         done < "$2"
@@ -53,7 +53,7 @@ else
                         ssh -n as@$ip [ ! -d /extra/backup ]
                         if  [ $? -eq 0 ]
                         then # Caso contrario lo crea
-                            ssh -n as@$ip mkdir -p /extra/backup
+                            ssh -n as@$ip sudo mkdir -p /extra/backup
                         fi
                         while read user pass nombre
                         do

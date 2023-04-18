@@ -14,7 +14,7 @@ else
 			-a)
 				while read ip
 				do
-					ssh -n as@$ip
+					netcat -z $ip 22 2 > /dev/null
 					if [ "$?" -eq 0 ]
 					then
 						while read linea
@@ -32,7 +32,7 @@ else
 							then
 								echo "El usuario "$nombre" ya existe"
 							else
-								ssh -n as@$ip "useradd "$nombre" -U -m -k /etc/skel -K UID_MIN=1815 -c "$apodo" ; usermod --expiredate "$(date -d "+30 days" +%Y-%m-%d)" "$nombre" ; echo "$nombre:$clave" | chpasswd ; echo ""$apodo" ha sido creado""
+								ssh -n as@$ip '"useradd '"$nombre"' -U -m -k /etc/skel -K UID_MIN=1815 -c '"$apodo"' ; usermod --expiredate "$(date -d "+30 days" +%Y-%m-%d)" '"$nombre"' ; echo '"$nombre:$clave"' | chpasswd ; echo "'"$apodo"' ha sido creado""'
 							fi
 						done < $2
 					else
