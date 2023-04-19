@@ -64,8 +64,8 @@ case "$1" in
 
                     # La siguiente línea ejecuta en la máquina remota
                     # solo ssh -n as@192.168.56.11 "cat /etc/passwd" el resto en local
-                    directorio=$(ssh -n as@192.168.56.11 "cat /etc/passwd" | grep "$user" | cut -d ':' -f 6)
-                    
+                    directorio=$(ssh -n as@"$ip" "cat /etc/passwd" | grep "$user" | cut -d ':' -f 6)
+
                     # Hace copia de seguridad de directorio local
                     ssh -n as@$ip "sudo tar -cf /extra/backup/$user.tar $directorio &>/dev/null"
 
