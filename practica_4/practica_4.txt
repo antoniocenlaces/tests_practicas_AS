@@ -1,0 +1,48 @@
+Configuración de dos máquinas Debian en VirtualBox
+
+1.- Configrar los adaptadores de red en cada una de las máquinas.
+	Cada máquina tiene dos adaptadores de red:
+		- enp0s3: enlace de red primario. Configurado con DHCP
+			Este enlace tiene una IP dinámica asignada por DHCP
+		- enp0s8: enlace de red con la red Host Only Network
+			Host ha creado la red 192.168.56.0/24 que se usará para
+			poder comunicar entre todas las máquinas de la práctica y
+			con el computador Host (en este caso un Windows).
+			Este enlace se configura con una IP estática, siendo diferente
+			para cada máquina. DebianAS1: 192.168.56.11 y DebianAS2: 192.168.56.12
+	La configuración de estos enlaces de red se hace en /etc/network/interfaces:
+	(Ejemplo para la máquina DebianAS1)
+			# The primary network interface
+			allow-hotplug enp0s3
+			iface enp0s3 inet dhcp
+			# The host only adapter
+			auto enp0s8
+			iface enp0s8 inet static
+			address 192.168.56.11
+			netmask 255.255.255.0
+
+2.- Reiniciar los servicios de red en las dos máquinas:
+	sudo systemctl restart networking
+
+3.- Al ser el Host una máquina windows, hemos creado una tercera máquina Debian que
+    llamamos DebianTester
+	Para crearla repetimos el paso 1 y 2 cambiando el adaptador enp0s8 para que
+tenga la IP 192.168.56.14. En esta máquina se generarán las claves público privadas.
+Además contendrá el script a ejecutar para crear / borrar usuarios en otras máquinas.
+
+4.- Generar clave público / privada en la máquina DebianTester
+	Con el comando:
+		ssh-keygen -t ed25519 -f ~/.ssh/id_as_ed25519
+	Nos genera los ficheros id_as_ed25519 (clave privada) y id_as_ed25519.pb (clave pública)
+
+5.- Copiar la clave pública de DebianTester a DebianAs1 y a DebianAS2
+	ssh-copy-id -i id_as_ed25519.pub as@192.168.56.11 (comando para DebianAS1)
+
+6.- En DebianTester configurar el cliente ssh para que use ~/.ssh/id_as_ed25519
+    como clave privada en las conexiones por ssh a servidores.
+	La configuración se realiza en el fichero /etc/ssh/ssh_config
+	Cambiando el parámetro IdentityFile:
+		IdentityFile: ~/.ssh/id_as_ed25519
+
+7.- Reiniciar servicio ssh en las tres máquinas
+	sudo service ssh restart
