@@ -1,3 +1,5 @@
+#143045, Gonzalez Almela, Antonio, T, 2, A
+#779035, Bernad Ferrando, Lizer, T, 2, A
 Memoria Práctica 5 AS
 Parte I. Añadir nuevo disco y crear particiones.
 1.- Crear nuevo disco SATA en VirtualBox antes de arrancar las máquinas
