@@ -1,0 +1,32 @@
+Memoria Práctica 5 AS
+Parte I. Añadir nuevo disco y crear particiones.
+1.- Crear nuevo disco SATA en VirtualBox antes de arrancar las máquinas
+2.- Identificar nuevo dispositivo
+    $ sudo parted -l
+        -> /dev/sdb
+3.- Usar parted para particionar
+    $ sudo parted
+    (parted) select /dev/sdb
+    (parted) mklabel gpt
+             mkpart P1 ext3 1MiB 25MiB
+             mkpart P2 ext4 26MiB 50MiB
+             align-check 1 opt
+             align-check 2 opt
+             q
+4.- Formatear
+        sudo mkfs - ext3 /dev/sdb1
+        sudo mkfs - ext4 /dev/sdb2
+5.- Crear directorios de montaje
+        sudo mkdir /part/p1
+        sudo mkdir /part/P2
+6.- Montar sistemas de ficheros nuevos
+        sudo mount -t ext3 /dev/sdb1 /part/p1
+        sudo mount -t ext4 /dev/sdb2 /part/p2
+7.- Averiguar UUID: blkid y añadir estas nuevas particiones a /etc/fstab
+8.- Reinicializar daemons
+        sudo systemctl daemon-reload
+
+Parte III
+
+Hay que desmontar las particiones creadas en la parte I para que puedan ser usadas por LVM
+Después de crear el grupo volumen vg_p5 y añadirle PVs, contendrá tres volumenes fíasicos.
